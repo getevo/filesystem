@@ -47,8 +47,9 @@ func (l *FileSystem) StorageToDisk(src, dst string) error {
 	if err != nil {
 		return err
 	}
-
-	fmt.Println("download to: " + dst)
+	if get.Response().StatusCode != 200 {
+		return fmt.Errorf("failed to get file, status code: %d", get.Response().StatusCode)
+	}
 	_ = gpath.MakePath(filepath.Dir(dst))
 	err = get.ToFile(dst)
 	return err
